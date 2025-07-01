@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { getCabins } from '../../services/apiCabins';
 import CabinRow from './CabinRow';
 import Spinner from '../../ui/Spinner';
+import Empty from '../../ui/Empty';
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -36,6 +37,8 @@ function CabinTable() {
   });
 
   if (isPending) return <Spinner />;
+
+  if (!cabins.length) return <Empty resource='cabins' />;
   return (
     <Table>
       <TableHeader>
