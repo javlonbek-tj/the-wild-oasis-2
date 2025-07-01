@@ -1,6 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import useCreateCabin from './useCreateCabin';
 
 import Input from '../../ui/Input';
 import Form from '../../ui/Form';
@@ -8,31 +7,49 @@ import Button from '../../ui/Button';
 import Textarea from '../../ui/Textarea';
 import FileInput from '../../ui/FileInput';
 
-import { createCabin as createCabinApi } from '../../services/apiCabins';
 import FormRow from '../../ui/FormRow';
+import useUpdateCabin from './useUpdateCabin';
 
-function CreateCabinForm() {
-  const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, formState, getValues } = useForm();
+function CreateCabinForm({ cabinToEdit = {} }) {
+  const { isCreating, createCabin } = useCreateCabin();
+  const { isUpdating, updateCabin } = useUpdateCabin();
+
+  const { id: cabinId, ...editValues } = cabinToEdit;
+  const isEditSession = Boolean(cabinId);
+
+  const { register, handleSubmit, reset, formState, getValues } = useForm({
+    defaultValues: isEditSession ? editValues : {},
+  });
 
   const { errors } = formState;
 
-  const { isPending, mutate: createCabin } = useMutation({
-    mutationFn: createCabinApi,
-    onSuccess: () => {
-      toast.success('New cabin successfully created');
-      queryClient.invalidateQueries({ queryKey: ['cabins'] });
-      reset();
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
   function onSubmit(data) {
-    createCabin(data);
+    const image = typeof data.image === 'string' ? data.image : data.image[0];
+    if (!isEditSession) {
+      createCabin(
+        { ...data, image },
+        {
+          onSuccess: () => {
+            reset();
+          },
+        }
+      );
+    } else {
+      updateCabin(
+        { newCabin: { ...data, image }, id: cabinId },
+        {
+          onSuccess: (data) => {
+            reset(data);
+          },
+        }
+      );
+    }
   }
 
+  const isPending = isCreating || isUpdating;
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} type='regular'>
       <FormRow label='Cabin name' error={errors?.name?.message}>
         <Input
           type='text'
@@ -105,7 +122,7 @@ function CreateCabinForm() {
           accept='image/*'
           disabled={isPending}
           {...register('image', {
-            required: 'This field is required',
+            required: isEditSession ? false : 'This field is required',
           })}
         />
       </FormRow>
@@ -116,7 +133,7 @@ function CreateCabinForm() {
           Cancel
         </Button>
         <Button variation='primary' size='medium' disabled={isPending}>
-          Create cabin
+          {isEditSession ? 'Edit' : 'Create'} cabin
         </Button>
       </FormRow>
     </Form>
