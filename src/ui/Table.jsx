@@ -79,6 +79,15 @@ function Header({ children }) {
   );
 }
 
+function Row({ children }) {
+  const { columns } = useContext(TableContext);
+  return (
+    <StyledRow role='header' as='header' columns={columns}>
+      {children}
+    </StyledRow>
+  );
+}
+
 function Body({ render, data }) {
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
@@ -88,6 +97,7 @@ function Footer({ children }) {
 }
 
 Table.Header = Header;
+Table.Row = Row;
 Table.Body = Body;
 Table.Footer = Footer;
 
