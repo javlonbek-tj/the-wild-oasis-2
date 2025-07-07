@@ -55,20 +55,20 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       onSubmit={handleSubmit(onSubmit)}
       type={onCloseModal ? 'modal' : 'regular'}
     >
-      <FormRow label='Cabin name' error={errors?.name?.message}>
+      <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
-          type='text'
-          id='name'
+          type="text"
+          id="name"
           disabled={isPending}
           {...register('name', {
             required: 'This field is required',
           })}
         />
       </FormRow>
-      <FormRow label='Maximum capacity' error={errors?.maxCapacity?.message}>
+      <FormRow label="Maximum capacity" error={errors?.maxCapacity?.message}>
         <Input
-          type='number'
-          id='maxCapacity'
+          type="number"
+          id="maxCapacity"
           disabled={isPending}
           {...register('maxCapacity', {
             required: 'This field is required',
@@ -79,10 +79,10 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
           })}
         />
       </FormRow>
-      <FormRow label='Regular price' error={errors?.regularPrice?.message}>
+      <FormRow label="Regular price" error={errors?.regularPrice?.message}>
         <Input
-          type='number'
-          id='regularPrice'
+          type="number"
+          id="regularPrice"
           disabled={isPending}
           {...register('regularPrice', {
             required: 'This field is required',
@@ -93,10 +93,10 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
           })}
         />
       </FormRow>
-      <FormRow label='Discount' error={errors?.discount?.message}>
+      <FormRow label="Discount" error={errors?.discount?.message}>
         <Input
-          type='number'
-          id='discount'
+          type="number"
+          id="discount"
           defaultValue={0}
           disabled={isPending}
           {...register('discount', {
@@ -108,23 +108,23 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         />
       </FormRow>
       <FormRow
-        label='Description for website'
+        label="Description for website"
         error={errors?.description?.message}
       >
         <Textarea
-          type='number'
-          id='description'
-          defaultValue=''
+          type="number"
+          id="description"
+          defaultValue=""
           {...register('description', {
             required: 'This field is required',
           })}
         />
       </FormRow>
 
-      <FormRow label='Cabin photo' error={errors?.image?.message}>
+      <FormRow label="Cabin photo" error={errors?.image?.message}>
         <FileInput
-          id='image'
-          accept='image/*'
+          id="image"
+          accept="image/*"
           disabled={isPending}
           {...register('image', {
             required: isEditSession ? false : 'This field is required',
@@ -135,14 +135,14 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       <FormRow>
         {/* type is an HTML attribute! */}
         <Button
-          variation='secondary'
-          type='reset'
-          size='medium'
+          variation="secondary"
+          type="reset"
+          size="medium"
           onClick={() => onCloseModal?.()}
         >
           Cancel
         </Button>
-        <Button variation='primary' size='medium' disabled={isPending}>
+        <Button variation="primary" size="medium" disabled={isPending}>
           {isEditSession ? 'Edit' : 'Create'} cabin
         </Button>
       </FormRow>
