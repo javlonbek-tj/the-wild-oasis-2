@@ -58,7 +58,6 @@ export async function getBookingsAfterDate(date) {
     .lte('created_at', getToday({ end: true }));
 
   if (error) {
-    console.error(error);
     throw new Error('Bookings could not get loaded');
   }
 
@@ -75,7 +74,6 @@ export async function getStaysAfterDate(date) {
     .lte('startDate', getToday());
 
   if (error) {
-    console.error(error);
     throw new Error('Bookings could not get loaded');
   }
 
